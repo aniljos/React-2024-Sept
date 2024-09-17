@@ -1,6 +1,17 @@
+import { useEffect } from "react";
+
 function Message(props){
 
     console.log("Message props", props);
+
+    // useEffect(callback, [list of dependencies]);
+    useEffect(() => {
+        console.log("useEffect on component mounted");
+
+        return () => {
+            console.log("useEffect on component unmounted");
+        }
+    }, []);
 
     return (
         <div>

@@ -1,33 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
 import Message from './components/Message';
 import Counter from './components/Counter';
+import ListProducts from './components/ListProducts';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import EditProduct from './components/EditProduct';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <main>
-          {/* <Message text="React" color="blue"/>
-          <Message text="JSX" color="red"/> */}
+    <Router>
 
-          <Counter initialvalue={5}/>
-          <Counter initialvalue={20}/>
-      </main>
-    </div>
+      <div className='container-fluid'>
+        <nav className="navbar navbar-dark bg-dark">
+          <div className="container-fluid">
+            <Link className="navbar-brand" to="/">React</Link>
+            <ul className="nav">
+              <li className="nav-item">
+                <Link className="nav-link active" to="/">Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/products">Products</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main>
+          <Routes>
+            <Route path='/' element={<div>Home</div>}/>
+            <Route path="/products" element={<ListProducts/>}/>
+            <Route path='/login' element={<div>Login</div>}/>
+            <Route path='/products/:id' element={<EditProduct/>}/>
+          </Routes>
+        </main>
+      </div>
+
+    </Router>
   );
 }
 
