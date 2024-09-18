@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import './ListProducts.css'
 import {useNavigate} from 'react-router-dom';
+import { useSelector } from "react-redux";
 
-const baseUrl = "http://localhost:9000/products";
+
+const baseUrl = "http://localhost:9000/secure_products";
+
 function ListProducts(){
 
     const [products, setProducts] = useState([]);
+    const authState = useSelector(state => state.auth);
+
     useEffect(() => {
 
         //fetchProducts();
@@ -27,9 +32,14 @@ function ListProducts(){
     }
     async function fetchProductsAsync(){
 
+        if(!authState.isAuthenticated){
+            navigate("/login");
+            return;
+        }
+
         try {
-            
-            const response = await axios.get(baseUrl);
+            const headers = { Authorization: `Bearer ${authState.accessToken}`};
+            const response = await axios.get(baseUrl, {headers} );
             //success
             console.log("success", response);
             setProducts(response.data);
@@ -47,7 +57,8 @@ function ListProducts(){
         const url = `${baseUrl}/${product.id}`;
         try {
             
-            await axios.delete(url);
+            const headers = { Authorization: `Bearer ${authState.accessToken}`};
+            await axios.delete(url, {headers});
             //await fetchProductsAsync();
 
             //copy of products
@@ -100,6 +111,10 @@ function ListProducts(){
     return (
         <div>
             <h4>List Products</h4>
+
+            <div className="alert alert-info">
+                Welcome {authState.user}
+            </div>
 
             <div style={{display: 'flex', flexFlow: 'row wrap', justifyContent: 'center'}}>
                 {renderProducts()}
