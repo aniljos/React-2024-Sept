@@ -7,7 +7,6 @@ function EditProduct(){
 
     const params = useParams();
     const [product, setProduct] = useState({id: 0, name: "", price: 0, description: ""});
-    const productRef = useRef(product);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -59,6 +58,8 @@ function EditProduct(){
     return (
         <div>
             <h4>Edit Product: Id: {params.id}</h4>
+
+            {/* <p>Product: {product}</p> */}
 
             <form>
                 <div className='form-group'>

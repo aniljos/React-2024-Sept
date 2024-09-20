@@ -1,64 +1,29 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from 'axios';
 import './ListProducts.css'
 import {useNavigate} from 'react-router-dom';
 import { useSelector } from "react-redux";
+import { useFetchProducts } from "../hooks/useFetchProduct";
+import ProductView from "./ProductView";
 
 
-const baseUrl = "http://localhost:9000/secure_products";
+const baseUrl = "http://localhost:9000/products";
 
 function ListProducts(){
 
-    const [products, setProducts] = useState([]);
-    const authState = useSelector(state => state.auth);
-
-    useEffect(() => {
-
-        //fetchProducts();
-        fetchProductsAsync();
-
-    }, [])
+  
+    
     const navigate = useNavigate();
-
-    function fetchProducts(){
-
-        axios.get(baseUrl)
-                    // .then(sucessCallback, errorCallback);
-                    .then((response) => {
-                        console.log("success", response);
-                    }, (errorResponse) => {
-                        console.log("error", errorResponse);
-                    });
-    }
-    async function fetchProductsAsync(){
-
-        if(!authState.isAuthenticated){
-            navigate("/login");
-            return;
-        }
-
-        try {
-            const headers = { Authorization: `Bearer ${authState.accessToken}`};
-            const response = await axios.get(baseUrl, {headers} );
-            //success
-            console.log("success", response);
-            setProducts(response.data);
-          
-
-        } catch (errorResponse) {
-            //error
-            console.log("error", errorResponse);
-        }
-    }
-
-    async function deleteProduct(product){
+    const {products, setProducts, isLoading, errorMessage} =  useFetchProducts(baseUrl);
+    const [isMessageVisible, setIsMessageVisible] = useState(false);
+    
+    const deleteProduct = useCallback( async (product) => {
 
         //const url = baseUrl + "/" + product.id;
         const url = `${baseUrl}/${product.id}`;
         try {
             
-            const headers = { Authorization: `Bearer ${authState.accessToken}`};
-            await axios.delete(url, {headers});
+            await axios.delete(url);
             //await fetchProductsAsync();
 
             //copy of products
@@ -80,41 +45,60 @@ function ListProducts(){
         }
 
 
-    }
+    }, [products])
 
-    function editProduct(product){
+    const editProduct = useCallback( (product)=> {
         
         navigate(`/products/${product.id}`);
-    }
+
+    }, []);
 
     function renderProducts(){
 
         const jsx = products.map(product => {
 
             return (
-                <div className="product">
-                    <p>Id: {product.id}</p>
-                    <p>{product.name}</p>
-                    <p>{product.description}</p>
-                    <p>Price: {product.price}</p>
-                    <div>
-                        <button onClick={() => {deleteProduct(product)}}>Delete</button>&nbsp;
-                        <button onClick={() => {editProduct(product)}}>Edit</button>
-                    </div>
-                </div>
+                // <div key={product.id} className="product">
+                //     <p>Id: {product.id}</p>
+                //     <p>{product.name}</p>
+                //     <p>{product.description}</p>
+                //     <p>Price: {product.price}</p>
+                //     <div>
+                //         <button onClick={() => {deleteProduct(product)}}>Delete</button>&nbsp;
+                //         <button onClick={() => {editProduct(product)}}>Edit</button>
+                //     </div>
+                // </div>
+                <ProductView key={product.id} product={product} 
+                                            onDelete={deleteProduct} onEdit={editProduct}/>
             )
 
         });
         return jsx;
     }
 
+
+    const calcPrices =useMemo( () => {
+        
+        console.log("calcPrices invoked");
+        let totalPrice = 0;
+
+        products.forEach(item => {
+            totalPrice+=item.price;
+        })
+        return totalPrice;
+    }, [products]);
+
     return (
         <div>
             <h4>List Products</h4>
 
-            <div className="alert alert-info">
-                Welcome {authState.user}
-            </div>
+            <div>Total Price: {calcPrices}</div>
+
+            {isLoading? <div className="alert alert-info">Loading...</div>: null}
+            {errorMessage? <div className="alert alert-warning">{errorMessage}</div>: null}
+
+            {isMessageVisible? <div className="alert alert-info">This is a test message</div> : null}
+            <button className="btn btn-info" onClick={() => setIsMessageVisible(p => !p)}>Toggle Message</button>
 
             <div style={{display: 'flex', flexFlow: 'row wrap', justifyContent: 'center'}}>
                 {renderProducts()}

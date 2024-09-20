@@ -5,17 +5,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './state/redux/store';
-import { AppThemeContext, initialThemeState } from './state/context/AppThemeContext';
+import { AppThemeContextProvider } from './state/context/AppThemeContext';
+import AppErrorBoundary from './errors/AppErrorBoundary';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <AppThemeContext.Provider value={initialThemeState}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </AppThemeContext.Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+    <AppErrorBoundary>
+      {/* <AppThemeContext.Provider value={initialThemeState}> */}
+      <AppThemeContextProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </AppThemeContextProvider>
+      {/* </AppThemeContext.Provider> */}
+    </AppErrorBoundary>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

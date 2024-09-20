@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 function Message(props){
 
@@ -23,4 +23,4 @@ function Message(props){
     )
 }
 
-export default Message;
+export default React.memo(Message);

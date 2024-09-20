@@ -16,7 +16,12 @@ function Counter(props){
   
     function inc(evt){
         //console.log("in inc", evt);
-        setCounter(counter + 1);
+        //setCounter(counter + 1);
+        //setCounter(counter + 1);
+        
+        setCounter(prevCounter => prevCounter + 1);
+        //setCounter(prevCounter => prevCounter + 1);
+        
         console.log("in inc", counter);
     }
     function decr(){

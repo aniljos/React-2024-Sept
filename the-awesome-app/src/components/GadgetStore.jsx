@@ -2,10 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart as addToGadgetStore } from "../state/redux/gadgetsReducer";
+import { useTitle } from "../hooks/useTitle";
 
 function GadgetStore() {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
+  useTitle("Gadgets");
 
   useEffect(() => {
     fetchProductsAsync();
