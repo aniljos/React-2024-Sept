@@ -1,11 +1,10 @@
 import { useLogin } from "../hooks/useLogin"
-
+import Input from "./Input"
 
 export function Login(){
 
-    const {message, name, password, setName, setPassword, login} = useLogin()
-   
-
+    const {message, name, password, setName, setPassword, login, nameInputRef} = useLogin()
+    
     return (
         <div>
             <h4>Login</h4>
@@ -14,17 +13,20 @@ export function Login(){
 
             <form onSubmit={login}>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="userName">Name</label>
-                    <input className="form-control" type="text" id="userName" value={name} 
+                    <input ref={nameInputRef} className="form-control" type="text" id="userName" value={name} 
                                                         onChange={e => setName(e.target.value)} />
-                </div>
+                </div> */}
+                <Input ref={nameInputRef} label="Name" type="text" id="userName" value={name} onChange={e => setName(e.target.value)}/>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="password">Password</label>
                     <input  className="form-control" type="password" id="password" value={password}
                                                         onChange={e => setPassword(e.target.value)}/>
-                </div>
+                </div> */}
+                <Input label="Password" type="password" id="password" value={password}
+                                                                        onChange={e => setPassword(e.target.value)}/>
 
                 <br/>
 

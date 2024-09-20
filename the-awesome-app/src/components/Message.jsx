@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { withBorder } from "../hoc/withBorder";
 
 function Message(props){
 
@@ -23,4 +24,4 @@ function Message(props){
     )
 }
 
-export default React.memo(Message);
+export default React.memo(withBorder(Message));

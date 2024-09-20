@@ -42,6 +42,12 @@ function AppBar(){
               <li className="nav-item">
                 <Link className="nav-link" to="/login">Login</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/search1">Search(Transitions)</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/search2">Search(Defffered)</Link>
+              </li>
               <li>
                 <button className='btn btn-warning' onClick={switchTheme}>Switch Theme</button>
               </li>

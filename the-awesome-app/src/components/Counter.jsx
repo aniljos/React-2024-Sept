@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
+import { withBorder } from "../hoc/withBorder";
 
 function Counter(props){
 
@@ -63,4 +64,4 @@ function Counter(props){
         </div>
     )
 }
-export default Counter;
+export default withBorder(Counter);

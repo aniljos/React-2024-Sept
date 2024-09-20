@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTitle } from "../hooks/useTitle";
 
@@ -12,6 +12,21 @@ export function useLogin(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useTitle("Login");
+    const [searchParams] = useSearchParams();
+    const redirectUrl = useRef("");
+    const nameInputRef = useRef(null);
+    
+    
+    useEffect(() => {
+
+        const value = searchParams.get('redirectFrom');
+        redirectUrl.current = value?value : "/products"
+
+        console.log("nameInputRef.current", nameInputRef.current);
+        if(nameInputRef.current){
+            nameInputRef.current.focus();
+        }
+    }, [])
 
     
 
@@ -34,7 +49,8 @@ export function useLogin(){
                 }});
                 
 
-                navigate("/products");
+                //navigate("/products");
+                navigate(redirectUrl.current);
 
             } catch (error) {
                 setMessage("Invalid credentials");
@@ -47,5 +63,5 @@ export function useLogin(){
             setMessage("Enter the credentials");
         }
     }
-    return {message, name, password, setName, setPassword, login}
+    return {message, name, password, setName, setPassword, login, nameInputRef}
 }
