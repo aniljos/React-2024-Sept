@@ -1,19 +1,17 @@
-import Message from './components/Message';
+
 import Counter from './components/Counter';
 import ListProducts from './components/ListProducts';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import EditProduct from './components/EditProduct';
 import { Login } from './components/Login';
 import GadgetStore from './components/GadgetStore';
 import AppBar from './components/AppBar';
 import AppErrorBoundary from './errors/AppErrorBoundary';
-import WikiSearch from './components/WikiSearch';
+
 
 
 function App() {
-
-
 
   return (
     <Router>
@@ -31,7 +29,6 @@ function App() {
               <Route path='/products/:id' element={<EditProduct />} />
               <Route path='/gadgets' element={<GadgetStore />} />
               <Route path='/viewcart' element={<div>View Cart</div>} />
-              <Route path='/search' element={<WikiSearch/>} />
             </Routes>
           </AppErrorBoundary>
         </main>
