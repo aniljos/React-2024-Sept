@@ -20,7 +20,7 @@ const ListProducts = React.lazy(() => import('./components/ListProducts'));
 function App() {
 
   return (
-    <Router basename='/react-app/'>
+    <Router>
 
       <div className='container-fluid'>
 
